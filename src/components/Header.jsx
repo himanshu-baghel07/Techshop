@@ -11,13 +11,14 @@ import {
 
 import { useEffect, useState } from "react";
 import DrawerComponent from "./DrawerComponent";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import firebase from "./Firebase";
 import {
   LogoutOutlined,
   Person,
   Person2,
   PersonOutline,
+  ShoppingCart,
 } from "@mui/icons-material";
 
 const PAGES = [
@@ -35,6 +36,8 @@ const Header = () => {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Update the value when the location changes
@@ -75,6 +78,14 @@ const Header = () => {
       });
   };
 
+  const handleCartClick = (e) => {
+    if (user) {
+      navigate("/cart");
+    } else {
+      navigate("/signin");
+    }
+  };
+
   return (
     <AppBar position="static" sx={{ background: "#063970" }}>
       <Toolbar>
@@ -95,6 +106,7 @@ const Header = () => {
                   display: "flex",
                   alignItems: "center",
                   textDecoration: "none",
+                  cursor: "none",
                 }}
                 to={"/profile"}
               >
@@ -102,6 +114,10 @@ const Header = () => {
                 {name}
               </Link>
             )}
+            <ShoppingCart
+              sx={{ fontSize: "1.5rem", mr: "25px", cursor: "pointer" }}
+              onClick={handleCartClick}
+            />
             <DrawerComponent />
           </>
         ) : (
@@ -116,18 +132,24 @@ const Header = () => {
               <Link
                 style={{
                   color: "yellow",
-                  width: "25%",
+                  // width: "25%",
                   fontSize: "0.8rem",
-                  marginRight: "2%",
+                  marginRight: "25px",
                   display: "flex",
                   alignItems: "center",
                   textDecoration: "none",
                 }}
                 to={"/profile"}
               >
-                <Person sx={{ fontSize: "1.2rem", mr: "1%" }} /> {name}
+                <Person sx={{ fontSize: "1.2rem", mr: "1px" }} /> {name}
               </Link>
             )}
+
+            <ShoppingCart
+              sx={{ fontSize: "1.5rem", mr: "25px", cursor: "pointer" }}
+              onClick={handleCartClick}
+            />
+
             <Tabs
               textColor="inherit"
               value={value}

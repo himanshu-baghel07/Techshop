@@ -7,11 +7,13 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-import React, { useContext } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProductDetail = ({ info }) => {
   const { id } = useParams();
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
 
   let foundProduct = null;
 
@@ -26,6 +28,13 @@ const ProductDetail = ({ info }) => {
   if (!foundProduct) {
     return <div>Product not found</div>;
   }
+
+  const handlClickName = (e) => {
+    const buttonId = e.currentTarget.id;
+    const name = buttonId;
+    setName(name);
+    navigate(`/cart/${name}`);
+  };
 
   return (
     <Container
@@ -157,6 +166,7 @@ const ProductDetail = ({ info }) => {
             </Typography>
 
             <Button
+              id={foundProduct.name}
               sx={{
                 backgroundColor: "green",
                 color: "white",
@@ -164,6 +174,7 @@ const ProductDetail = ({ info }) => {
                 fontFamily: "Rubik",
                 "&:hover": { backgroundColor: "#527506" },
               }}
+              onClick={handlClickName}
             >
               Buy
             </Button>

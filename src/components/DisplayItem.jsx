@@ -51,7 +51,7 @@ const DisplayItem = ({ info }) => {
                   color="warning"
                   onClick={handleName}
                 >
-                  Buy
+                  View
                 </Button>
               </CardActions>
             </Card>
@@ -103,7 +103,7 @@ const DisplayItem = ({ info }) => {
                   color="warning"
                   onClick={handleName}
                 >
-                  Buy
+                  View
                 </Button>
               </CardActions>
             </Card>
