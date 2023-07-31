@@ -8,6 +8,7 @@ import Signup from "./components/Signup";
 import Signin from "./components/Signin";
 import Profile from "./components/Profile";
 import Cart from "./components/Cart";
+import { ProductProvider } from "./components/ProductContext";
 
 const App = () => {
   const [info, setInfo] = useState(null);
@@ -28,25 +29,27 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
-      <Header />
-      <Routes>
-        {info && (
-          <>
-            <Route exact path="/" element={<DisplayItem info={info} />} />
-          </>
-        )}
-        <Route
-          exact
-          path="/productdetails/:id"
-          element={<ProductDetail info={info} />}
-        />
-        <Route exact path="/signup" element={<Signup />} />
-        <Route exact path="/signin" element={<Signin />} />
-        <Route exact path="/profile" element={<Profile />} />
-        <Route exact path="/cart/:name" element={<Cart info={info} />} />
-      </Routes>
-    </Router>
+    <ProductProvider>
+      <Router>
+        <Header />
+        <Routes>
+          {info && (
+            <>
+              <Route exact path="/" element={<DisplayItem info={info} />} />
+            </>
+          )}
+          <Route
+            exact
+            path="/productdetails/:id"
+            element={<ProductDetail info={info} />}
+          />
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/signin" element={<Signin />} />
+          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/cart" element={<Cart info={info} />} />
+        </Routes>
+      </Router>
+    </ProductProvider>
   );
 };
 

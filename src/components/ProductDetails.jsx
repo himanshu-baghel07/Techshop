@@ -9,10 +9,43 @@ import {
 } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useProductContext } from "./ProductContext";
 
 const ProductDetail = ({ info }) => {
   const { id } = useParams();
   const [name, setName] = useState("");
+  const [productName, setProductName] = useState("");
+  const { productArray, setProductArray } = useProductContext();
+
+  const addProduct = () => {
+    if (foundProduct && foundProduct.name) {
+      // Check if the product name already exists in the productArray
+      const isProductAlreadyAdded = productArray.some(
+        (product) => product === foundProduct.name
+      );
+
+      if (isProductAlreadyAdded) {
+        // Handle the case when the same product is already added
+        console.log("Product already added!");
+        // You can show an alert or take any other action here
+      } else {
+        // Add the product to the productArray if it's not already added
+        setProductArray([...productArray, foundProduct.name]);
+        setProductName(foundProduct.name);
+      }
+    }
+  };
+
+  const removeProduct = (index) => {
+    const updatedProductArray = [...productArray];
+    updatedProductArray.splice(index, 1);
+    setProductArray(updatedProductArray);
+  };
+
+  const handleGoToCart = () => {
+    navigate("/cart");
+  };
+
   const navigate = useNavigate();
 
   let foundProduct = null;
@@ -36,6 +69,7 @@ const ProductDetail = ({ info }) => {
     navigate(`/cart/${name}`);
   };
 
+  const productAlreadyAdded = productArray.includes(foundProduct.name);
   return (
     <Container
       maxWidth={false}
@@ -164,20 +198,39 @@ const ProductDetail = ({ info }) => {
             >
               <b>Price:</b> {foundProduct.price}
             </Typography>
-
-            <Button
-              id={foundProduct.name}
-              sx={{
-                backgroundColor: "green",
-                color: "white",
-                textAlign: "center",
-                fontFamily: "Rubik",
-                "&:hover": { backgroundColor: "#527506" },
-              }}
-              onClick={handlClickName}
-            >
-              Buy
-            </Button>
+            {productAlreadyAdded ? (
+              <>
+                <Typography variant="subtitle2" color="goldenrod" gutterBottom>
+                  Product already added
+                </Typography>
+                <Button
+                  sx={{
+                    backgroundColor: "green",
+                    color: "white",
+                    textAlign: "center",
+                    fontFamily: "Rubik",
+                    "&:hover": { backgroundColor: "#527506" },
+                  }}
+                  onClick={handleGoToCart}
+                >
+                  Go to Cart
+                </Button>
+              </>
+            ) : (
+              <Button
+                id={foundProduct.name}
+                sx={{
+                  backgroundColor: "green",
+                  color: "white",
+                  textAlign: "center",
+                  fontFamily: "Rubik",
+                  "&:hover": { backgroundColor: "#527506" },
+                }}
+                onClick={addProduct}
+              >
+                add to Cart
+              </Button>
+            )}
           </CardContent>
         </Card>
       </Box>
